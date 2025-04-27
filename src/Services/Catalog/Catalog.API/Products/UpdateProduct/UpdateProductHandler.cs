@@ -1,4 +1,6 @@
 ﻿
+using Catalog.API.Products.DeleteProduct;
+
 namespace Catalog.API.Products.UpdateProduct
 {
     public record UpdateProductCommand(Guid Id,
@@ -8,6 +10,18 @@ namespace Catalog.API.Products.UpdateProduct
                                         string ImageFile,
                                         decimal Price) : ICommand<UpdateProductResult>;
     public record UpdateProductResult(bool IsSuccess);
+
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+    {
+        public UpdateProductCommandValidator()
+        {
+            RuleFor(p => p.Id).NotEmpty().WithMessage("Product name is required.");
+            RuleFor(p => p.Name)
+                .NotEmpty().WithMessage("Product name is required.")
+                .Length(2,150).WithMessage("Name must be between 2 and 150 characters");
+            RuleFor(p => p.Price).GreaterThan(0).WithMessage("Product price must be greater than 0.");
+        }
+    }
     internal class UpdateProductCommandHandler (IDocumentSession session, ILogger<UpdateProductCommandHandler> logger)
         : ICommandHandler<UpdateProductCommand, UpdateProductResult>
     {
