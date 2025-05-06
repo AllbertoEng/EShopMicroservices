@@ -10,7 +10,14 @@
             ArgumentException.ThrowIfNullOrEmpty(name);
             ArgumentException.ThrowIfNullOrEmpty(email);
 
-            //Create a new customer and return it AI!
+            var customer = new Customer
+            {
+                Id = id,
+                Name = name,
+                Email = email
+            };
+
+            return customer;
         }
     }
 }
